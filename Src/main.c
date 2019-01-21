@@ -43,7 +43,7 @@
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "lcd.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -97,14 +97,38 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
+	LCD_Init();
+	LCD_SetRotation(1);
+	LCD_SetTextColor(GREEN, BLACK);
+	LCD_Printf("\n START\n ");
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
-	  HAL_Delay(1000);
+	  for (int i=0; i<9; i++)
+	  {
+		  LCD_Printf("%d)",i);
+		  //LCD_SetCursor(0, 80);
+		  switch(i)
+			{
+				case  7: LCD_Printf(" Sunday "); 		break;
+				case  1: LCD_Printf(" Monday ");		break;
+				case  2: LCD_Printf(" Tuesday "); 	break;
+				case  3: LCD_Printf(" Wednesday ");	break;
+				case  4: LCD_Printf(" Thursday ");	break;
+				case  5: LCD_Printf(" Friday ");		break;
+				case  6: LCD_Printf(" Saturday ");	break;
+				default: LCD_Printf(" Out of day ");	break;
+			} // end switch
+
+		LCD_Printf("\n ");
+		HAL_Delay(1000);
+		HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+	  } // end for i=0
+	LCD_Printf("\n End\n");
 
   /* USER CODE END WHILE */
 
